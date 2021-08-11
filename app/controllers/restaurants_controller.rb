@@ -19,8 +19,12 @@ class RestaurantsController < ApplicationController
    # POST /restaurants or /restaurants.json
   def create
     @restaurant = Restaurant.new(restaurant_params)
-    @restaurant.save
-    redirect_to restaurant_path(@restaurant)
+
+    if @restaurant.save
+      redirect_to @restaurant, notice: 'Restaurant was successfully created.'
+    else
+      render :new
+    end
 
     # respond_to do |format|
     #   if @restaurant.save
@@ -63,6 +67,6 @@ class RestaurantsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def restaurant_params
-      params.require(:restaurant).permit(:name, :address, :phone_number, :category, :reviews)
+      params.require(:restaurant).permit(:name, :address, :phone_number, :category)
     end
 end
